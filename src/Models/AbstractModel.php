@@ -4,11 +4,11 @@ namespace ShineOnCom\Zoho\Models;
 
 use ArrayAccess;
 use Carbon\Carbon;
-use ShineOnCom\Zoho\Util;
 use DateTime;
 use DateTimeInterface;
 use JsonSerializable;
 use Serializable;
+use ShineOnCom\Zoho\Helpers\Util;
 
 /**
  * Class AbstractModel

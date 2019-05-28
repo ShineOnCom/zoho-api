@@ -3,13 +3,13 @@
 namespace ShineOnCom\Zoho;
 
 use BadMethodCallException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use ShineOnCom\Zoho\Exceptions\InvalidOrMissingEndpointException;
 use ShineOnCom\Zoho\Exceptions\ModelNotFoundException;
 use ShineOnCom\Zoho\Helpers\Util;
 use ShineOnCom\Zoho\Models\AbstractModel;
 use ShineOnCom\Zoho\Models\Contact;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class Zoho
@@ -208,15 +208,7 @@ class Zoho extends Client
         try {
             $data = $this->get([], $args = $id);
 
-            if (isset(static::$resource_models[$this->api])) {
-                $class = static::$resource_models[$this->api];
-
-                if (isset($data[$class::$resource_name])) {
-                    $data = $data[$class::$resource_name];
-                }
-
-                return empty($data) ? null : new $class($data);
-            }
+            return $this->getModel($data);
         } catch (ClientException $ce) {
             if ($ce->getResponse()->getStatusCode() == 404) {
                 $msg = sprintf('Model(%s) not found for `%s`',
@@ -227,6 +219,28 @@ class Zoho extends Client
 
             throw $ce;
         }
+    }
+
+    /**
+     * Use the Query API
+     * https://www.zoho.com/crm/help/developer/api/COQL-Overview.html
+     *
+     * @param string $select_query
+     * @param bool $pluck_data
+     * @return AbstractModel|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function query($select_query, $pluck_data = true)
+    {
+        $response = $this->request(
+            'POST',
+            static::$base . '/coql',
+            [
+                'json' => compact('select_query')
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
@@ -502,5 +516,16 @@ class Zoho extends Client
 //            Log::info('Zoho API Request', compact('method', 'uri') + $options);
 //        }
         return parent::request($method, $uri, $options);
+    }
+
+    /**
+     * @param $data
+     * @return AbstractModel
+     */
+    public function getModel($data)
+    {
+        $class = static::$resource_models[$this->api];
+
+        return new $class($data['data'][0]);
     }
 }

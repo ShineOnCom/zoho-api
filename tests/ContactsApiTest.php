@@ -2,10 +2,10 @@
 
 namespace ShineOnCom\Zoho\Test;
 
+use PHPUnit\Framework\TestCase;
 use ShineOnCom\Zoho\Helpers\Testing\ModelFactory\ContactFactory;
 use ShineOnCom\Zoho\Helpers\Testing\TransactionMock;
 use ShineOnCom\Zoho\Models\Contact;
-use PHPUnit\Framework\TestCase;
 use ShineOnCom\Zoho\Zoho;
 
 class ContactsApiTest extends TestCase
@@ -59,14 +59,21 @@ class ContactsApiTest extends TestCase
      * POST /coql
      *
      * @test
-     * @throws \ShineOnCom\Zoho\Exceptions\InvalidOrMissingEndpointException
-     * @throws \ShineOnCom\Zoho\Exceptions\ModelNotFoundException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function it_gets_a_contact_by_email()
     {
         $contact = ContactFactory::create();
 
-        $response = json_encode(['data' => [$contact]]);
+        $response = json_encode([
+            'data' => [
+                $contact
+            ],
+            'info' => [
+                'count' => 1,
+                'more_records' => false
+            ]
+        ]);
 
         $api = Zoho::fake([TransactionMock::create($response)]);
 
@@ -74,7 +81,7 @@ class ContactsApiTest extends TestCase
 
         $this->assertEquals(200, $api->lastResponseStatusCode());
         $this->assertEquals(Contact::class, get_class($response));
-        $this->assertEquals('GET', $api->lastRequestMethod());
+        $this->assertEquals('POST', $api->lastRequestMethod());
         $this->assertEquals(sprintf('/%s/coql', Zoho::$base), $api->lastRequestUri());
     }
 }
