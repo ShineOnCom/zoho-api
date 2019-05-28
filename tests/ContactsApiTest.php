@@ -12,10 +12,11 @@ class ContactsApiTest extends TestCase
 {
     /**
      * GET /Contacts
-     * Retrieves a list of products.
+     * Retrieves a list of contacts.
      *
      * @test
      * @throws \ShineOnCom\Zoho\Exceptions\InvalidOrMissingEndpointException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function it_gets_a_list_of_contacts()
     {
@@ -38,6 +39,7 @@ class ContactsApiTest extends TestCase
      * @test
      * @throws \ShineOnCom\Zoho\Exceptions\InvalidOrMissingEndpointException
      * @throws \ShineOnCom\Zoho\Exceptions\ModelNotFoundException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function it_gets_a_contact_by_id()
     {
