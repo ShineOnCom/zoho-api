@@ -1,8 +1,8 @@
 {
-    "name": "shineoncom/laravel-zoho-api",
-    "description": "ZOHO API with Laravel integrations using latest Guzzle.",
+    "name": "shineoncom/zoho-api",
+    "description": "ZOHO API PHP with optional Laravel integrations using latest Guzzle.",
     "license": "MIT",
-    "keywords": ["zoho", "api", "webhooks", "laravel"],
+    "keywords": ["zoho", "api", "php", "laravel"],
     "type": "project",
     "authors": [
         {
