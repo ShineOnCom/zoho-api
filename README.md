@@ -6,7 +6,7 @@ This repos is a work-in-progress and not production ready.
 
 ## Composer
 
-    $ composer require shineoncom/shopify-api v1.*
+    $ composer require shineoncom/zoho-api v1.*
     
 ## Contributors
 
