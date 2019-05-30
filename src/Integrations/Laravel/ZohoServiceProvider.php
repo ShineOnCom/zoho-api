@@ -2,8 +2,8 @@
 
 namespace ShineOnCom\Zoho\Integrations\Laravel;
 
-use ShineOnCom\Zoho\Util;
 use Illuminate\Support\ServiceProvider;
+use ShineOnCom\Zoho\Helpers\Util;
 use ShineOnCom\Zoho\Zoho;
 
 /**
