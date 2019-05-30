@@ -2,11 +2,11 @@
 
 namespace ShineOnCom\Zoho\Helpers\Testing;
 
-use ShineOnCom\Zoho\Zoho;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use ReflectionMethod;
+use ShineOnCom\Zoho\Zoho;
 
 /**
  * Class ZohoMock
@@ -30,8 +30,6 @@ class ZohoMock extends Zoho
         $history = Middleware::history($this->requestHistory);
         $handler->push($history);
 
-        $token = 'test_token';
-
         // Calling Guzzle constructor
         try {
             $reflectionMethod = new ReflectionMethod(get_parent_class(get_parent_class($this)), '__construct');
@@ -39,7 +37,7 @@ class ZohoMock extends Zoho
             $reflectionMethod->invoke($this, [
                 'base_uri' => 'http://test.com',
                 'headers' => [
-                    'Authorization' => "Zoho-oauthtoken {$token}",
+                    'Authorization' => "Zoho-oauthtoken test_token",
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json; charset=utf-8;',
                 ],
