@@ -20,9 +20,17 @@ class ContactsApiTest extends TestCase
      */
     public function it_gets_a_list_of_contacts()
     {
-        $api = Zoho::fake([
-            TransactionMock::create(ContactFactory::create(2))
+        $response = json_encode([
+            'data' => ContactFactory::create(2),
+            'info' => [
+                'per_page' => 200,
+                'count' => 2,
+                'page' => 1,
+                'more_records' => false
+            ]
         ]);
+
+        $api = Zoho::fake([TransactionMock::create($response)]);
 
         $response = $api->contacts->get();
 
